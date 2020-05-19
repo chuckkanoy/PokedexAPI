@@ -18,3 +18,5 @@ Route::get('/', function () {
 });
 
 Route::get('pokemon/{id}', 'PokemonController@show');
+
+Route::get('all', 'PokemonController@index');
