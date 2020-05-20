@@ -1,4 +1,4 @@
-# Use root/example as user/password credentials
+# Use root/example as users/password credentials
 version: '3.1'
 services:
   db:
@@ -12,8 +12,5 @@ services:
       MYSQL_USER: root
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
-  adminer:
-    image: adminer
-    restart: always
     ports:
-      - 8080:8080
+    - 8080:8080

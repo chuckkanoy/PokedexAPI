@@ -17,6 +17,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//pokemon related routes
+Route::get('pokemon', 'PokemonController@index');
+Route::post('pokemon', 'PokemonController@store');
+Route::get('pokemon/create', 'PokemonController@create');
 Route::get('pokemon/{id}', 'PokemonController@show');
+Route::get('pokemon/{id}/edit', 'PokemonController@edit');
+Route::put('pokemon/{id}', 'PokemonController@update');
 
-Route::get('all', 'PokemonController@index');
+//users related routes
+Route::get('users','UserController@index');
+Route::post('users', 'UserController@store');
+Route::get('users/create', 'UserController@create');
+Route::get('users/{id}', 'UserController@show');
+
+

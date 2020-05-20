@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Pokemon;
 
 class PokemonController extends Controller
 {
@@ -13,7 +15,9 @@ class PokemonController extends Controller
      */
     public function index()
     {
-        //
+        $pokemon = DB::table('pokemon')->simplePaginate(10);
+
+        return view('pokemon.index', ['pokemon' => $pokemon]);
     }
 
     /**
@@ -34,6 +38,7 @@ class PokemonController extends Controller
      */
     public function store(Request $request)
     {
+        $name = $request -> input('name');
         //
     }
 
@@ -43,9 +48,9 @@ class PokemonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Pokemon $id)
     {
-        //
+        return view('pokemon.show', ['pokemon'=>$id]);
     }
 
     /**

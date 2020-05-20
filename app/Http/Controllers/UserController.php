@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -13,7 +15,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = DB::table('users')->simplePaginate(10);
+
+        return view('users.index', ['users' => $users]);
     }
 
     /**
@@ -23,7 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -34,7 +38,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        User::create(request()->validate([
+            'name' => 'required|regex:/^[a-zA-Z]+$/u|max:255',
+            'email' => 'required|email',
+            'password' => 'required'
+        ]));
+
+        redirect('users');
     }
 
     /**
@@ -43,9 +53,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $id)
     {
-        //
+        return view('users.show', ['user'=>$id]);
     }
 
     /**

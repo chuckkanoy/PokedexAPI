@@ -3,8 +3,8 @@
 @section('content')
     <div id="wrapper">
         <div id="page" class="container">
-            <h1>New Pokemon</h1>
-            <form method="POST" action="/pokemon">
+            <h1>New User</h1>
+            <form method="POST" action="/users">
                 @csrf
 
                 <div class="field">
@@ -30,9 +30,10 @@
 
                     <div class="control">
                         <input
-                            class="textarea @error('email') is-danger @enderror"
-                            name="description"
-                            id="description">{{old('email')}}</input>
+                            class="input @error('email') is-danger @enderror"
+                            name="email"
+                            id="email"
+                            value="{{old('email')}}"></input>
 
                         @if($errors->has('email'))
                             <p class="help is-danger">{{$errors->first('email')}}</p>
@@ -45,9 +46,11 @@
 
                     <div class="control">
                         <input
-                            class="textarea @error('password') is-danger @enderror"
-                            name="description"
-                            id="description">{{old('password')}}</input>
+                            class="input @error('password') is-danger @enderror"
+                            name="password"
+                            id="password"
+                            value="{{old('password')}}"
+                        ></input>
 
                         @if($errors->has('password'))
                             <p class="help is-danger">{{$errors->first('password')}}</p>
