@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
 use Illuminate\Support\Facades\DB;
+use App\User;
+
 
 class UserController extends Controller
 {
@@ -38,13 +39,23 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        User::create(request()->validate([
+        //validate request
+        request()->validate([
             'name' => 'required|regex:/^[a-zA-Z]+$/u|max:255',
             'email' => 'required|email',
             'password' => 'required'
-        ]));
+        ]);
 
-        redirect('users');
+        //create object of user
+        $user = new User();
+        $user->name=request('name');
+        $user->email=request('email');
+        //hash user password
+        $user->setPasswordAttribute(request('password'));
+
+        $user->save();
+
+        return redirect('users');
     }
 
     /**

@@ -14,22 +14,22 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'Professor Oak',
             'email'=>'oakboi@yahoo.com',
-            'password'=>'oaky'
+            'password'=>Hash::make('oaky')
         ]);
         DB::table('users')->insert([
             'name' => 'Brock',
             'email'=>'theunofficialrock@gmail.com',
-            'password'=>'BIG'
+            'password'=>Hash::make('BIG')
         ]);
         DB::table('users')->insert([
             'name' => 'Misty',
             'email'=>'mistymist@yahoo.com',
-            'password'=>'wshhh'
+            'password'=>Hash::make('wshhh')
         ]);
         DB::table('users')->insert([
             'name' => 'Ash Ketchum',
             'email'=>'ogash@gmail.com',
-            'password'=>'l0vepik@chu'
+            'password'=>Hash::make('l0vepik@chu')
         ]);
     }
 }

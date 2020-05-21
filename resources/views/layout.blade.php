@@ -18,6 +18,7 @@
             font-weight: 200;
             height: 100vh;
             margin: 0;
+            position: relative;
         }
 
         .full-height {
@@ -64,6 +65,9 @@
     </style>
 </head>
 <body>
-    @yield('content')
+@if(Auth::check())
+    {{Auth::user()->name}}
+@endif
+@yield('content')
 </body>
 </html>
