@@ -37,20 +37,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * modify password parameter using built in Hash method
+     *
+     * @param $password
+     */
     public function setPasswordAttribute($password){
         $this->attributes['password'] = Hash::make($password);
     }
 
     /**
-     * Get the pokemon associated with this user
+     * Defines many to many relationship between users and pokemon
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function pokemon() {
         return $this->belongsToMany('App\Pokemon', 'pokemon_users');
-    }
-
-    public function clearTokens() {
-        $this->attributes['api_token'] = null;
     }
 }

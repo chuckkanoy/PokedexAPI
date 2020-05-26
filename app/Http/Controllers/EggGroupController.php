@@ -9,7 +9,10 @@ use App\EggGroup;
 class EggGroupController extends Controller
 {
     /**
-     * return pokemon associated with egg group parameter
+     * return a JSON array of the pokemon associated with the group
+     *
+     * @param $group
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function show($group) {
         $group = Type::where('name', $group)->first();

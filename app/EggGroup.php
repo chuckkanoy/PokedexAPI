@@ -9,7 +9,7 @@ class EggGroup extends Model
     protected $hidden = ["pivot"];
 
     /**
-     * Pokemon associated with this egg_group
+     * Defines many to many relationship between egg groups and pokemon
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

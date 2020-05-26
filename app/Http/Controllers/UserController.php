@@ -44,7 +44,8 @@ class UserController extends Controller
         //validate request
         request()->validate([
             'name' => 'required|regex:/^[a-zA-Z]+$/u|max:255',
-            'email' => 'required|email',
+            //assure that user does not already have an account
+            'email' => 'required|email|unique:users,email,{$this->user->id}',
             'password' => 'required'
         ]);
 
@@ -57,6 +58,7 @@ class UserController extends Controller
 
         $user->save();
 
+        //login with newly made credentials through LoginController
         $login = new LoginController();
         $login->authenticate(request());
     }

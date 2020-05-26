@@ -25,7 +25,9 @@ class CaptureController extends Controller
     }
 
     /**
-     * return an array of the captured pokemon
+     * return JSON array of pokemon captured by the user
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function captured(){
         return PokemonResource::collection(Auth::user()->pokemon);

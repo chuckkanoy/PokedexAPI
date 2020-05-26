@@ -16,6 +16,12 @@ class LoginController extends Controller
         return view('login');
     }
 
+    /**
+     * grant user access if they have provided the appropriate data
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function authenticate(Request $request)
     {
         //validate user input and store in array
@@ -36,6 +42,11 @@ class LoginController extends Controller
         }
     }
 
+    /**
+     * log user out by clearing their api_token
+     *
+     * @return string
+     */
     public function logout()
     {
         Auth::user()->api_token = "";

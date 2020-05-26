@@ -9,7 +9,10 @@ use App\Ability;
 class AbilityController extends Controller
 {
     /**
-     * return pokemon associated with ability parameter
+     * return pokemon related to the ability
+     *
+     * @param $ability
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function show($ability) {
         $ability = Ability::where('name', $ability)->first();

@@ -10,26 +10,34 @@ class Pokemon extends Model
     protected $fillable = ['id', 'name', 'types', 'height', 'weight', 'abilities', 'egg_groups', 'stats', 'genus', 'description'];
 
     /**
-     * Get the abilities associated with the pokemon
+     * Defines many to many relationship between abilities and pokemon
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function abilities() {
         return $this->belongsToMany('App\Ability','pokemon_abilities');
     }
+
     /**
-     * Get the egg groups associated with the pokemon
+     * Defines many to many relationship between egg groups and pokemon
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function egg_groups() {
         return $this->belongsToMany('App\EggGroup', 'pokemon_egg_groups');
     }
+
     /**
-     * Get the types associated with the pokemon
+     * Defines many to many relationship between types and pokemon
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function types() {
         return $this->belongsToMany('App\Type', 'pokemon_types');
     }
 
     /**
-     * Get the users associated with the pokemon
+     * Defines many to many relationship between users and pokemon
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

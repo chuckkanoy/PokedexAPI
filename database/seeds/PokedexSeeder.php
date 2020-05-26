@@ -19,9 +19,10 @@ class PokedexSeeder extends Seeder
     }
 
     /**
-     * return filtered data from specified column
+     * Iterate through desired property and add to minimized array for later use
      *
-     * @param $index
+     * @param $column
+     * @return array
      */
     public function getFromColumn($column){
         //initialize local variables for use
@@ -57,6 +58,7 @@ class PokedexSeeder extends Seeder
      * @param $table
      */
     public function insertToTable($minimized, $table){
+        //use minimized array to add table entries
         foreach($minimized as $single) {
             DB::table($table)->insert([
                 'name'=>$single
@@ -65,7 +67,7 @@ class PokedexSeeder extends Seeder
     }
 
     /**
-     * perform both get and insert function in one method
+     * Populate the pivot tables from provided columns
      *
      * @param $column
      * @param $table
@@ -81,18 +83,18 @@ class PokedexSeeder extends Seeder
      */
     public function run()
     {
-        //populate types table with seeder values
+        //create and populate tables associated with pokemon
         $this->getAndInsert(2, 'types');
-        //populate abilities
         $this->getAndInsert(5, 'abilities');
-        //populate egg groups
         $this->getAndInsert(6, 'egg_groups');
-        //open csv file and read it
+
+        //populate pokemon table from csv and add relationships
         if (($handle = fopen(public_path() . '/pokedex.csv', 'r')) !== FALSE) {
             //skip first row
             fgetcsv($handle);
+
             while (($data = fgetcsv($handle)) !== FALSE) {
-                //populate pokemon
+                //add current pokemon to DB table
                 DB::table('pokemon')->insert([
                     'id' => $data[0],
                     'name' => $data[1],
@@ -105,21 +107,21 @@ class PokedexSeeder extends Seeder
                     'genus' => $data[8],
                     'description' => $data[9],
                 ]);
-                //create new pokemon
+
+                //store current pokemon's data in an object
                 $pokemon = Pokemon::find($data[0]);
-                //populate pokemon types pivot table
+
+                //populate pivot tables using relationships
                 $cleaned = $this->clean($data[2]);
                 foreach($cleaned as $oneClean){
                     $pokemon->types()->attach(Type::where('name', $oneClean)->select('id')->get());
                 }
 
-                //populate pokemon abilities pivot table
                 $cleaned = $this->clean($data[5]);
                 foreach($cleaned as $oneClean){
                     $pokemon->egg_groups()->attach(Ability::where('name', $oneClean)->select('id')->get());
                 }
 
-                //populate pokemon egg groups pivot table
                 $cleaned = $this->clean($data[6]);
                 foreach($cleaned as $oneClean){
                     $pokemon->abilities()->attach(EggGroup::where('name', $oneClean)->select('id')->get());
