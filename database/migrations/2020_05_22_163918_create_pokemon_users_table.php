@@ -14,7 +14,8 @@ class CreatePokemonUsersTable extends Migration
     public function up()
     {
         Schema::create('pokemon_users', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId('pokemon_id');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

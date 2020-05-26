@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ability extends Model
 {
+    protected $hidden = ["pivot"];
     /**
      * pokemon associated with an ability
      */

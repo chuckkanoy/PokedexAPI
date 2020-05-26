@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\LoginController;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\User;
@@ -55,7 +57,8 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect('users');
+        $login = new LoginController();
+        $login->authenticate(request());
     }
 
     /**

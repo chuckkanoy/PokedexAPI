@@ -40,6 +40,3 @@ Route::get('/logout', 'LoginController@logout');
 //    Route::get('/', 'PokemonController@index');
 //});
 
-
-
-

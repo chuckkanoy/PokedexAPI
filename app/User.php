@@ -10,14 +10,13 @@ use Illuminate\Support\Facades\Hash;
 class User extends Authenticatable
 {
     use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'api_token'
     ];
 
     /**
@@ -40,5 +39,18 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($password){
         $this->attributes['password'] = Hash::make($password);
+    }
+
+    /**
+     * Get the pokemon associated with this user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function pokemon() {
+        return $this->belongsToMany('App\Pokemon', 'pokemon_users');
+    }
+
+    public function clearTokens() {
+        $this->attributes['api_token'] = null;
     }
 }

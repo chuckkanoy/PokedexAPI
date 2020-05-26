@@ -16,17 +16,34 @@ use App\Pokemon;
 |
 */
 
-Route::middleware('auth:api')->get('/users', function (Request $request) {
-    return $request->user();
+//secure routes
+Route::middleware('auth:api')->group(function () {
+    Route::post('/logout', 'LoginController@logout');
+    Route::post('/pokemon/{id}/capture', 'CaptureController@capture');
+    Route::get('/pokemon/captured', 'CaptureController@captured');
 });
 
-//routes for accessing pokemon
+//route for login
+Route::post('/login', 'LoginController@authenticate')->name('login');
+
+//routes for registration
+Route::post('/register', 'UserController@store');
+
+//routes for pokemon
 Route::get('/pokemon', function() {
     return PokemonResource::collection(Pokemon::paginate(10));
 });
+
 Route::get('/pokemon/{id}', function($id){
     return new PokemonResource(Pokemon::find($id));
 });
 
-//routes for user
+//route for types
+Route::get('pokemon/types/{type}', 'TypeController@show');
+
+//route for egg groups
+Route::get('pokemon/egggroups/{group}', 'EggGroupController@show');
+
+//route for ability
+Route::get('pokemon/abilities/{ability}', 'AbilityController@show');
 

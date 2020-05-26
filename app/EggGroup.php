@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class EggGroup extends Model
 {
+    protected $hidden = ["pivot"];
+
     /**
      * Pokemon associated with this egg_group
      *

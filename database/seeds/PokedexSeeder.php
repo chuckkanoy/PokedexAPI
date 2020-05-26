@@ -2,6 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use App\Pokemon;
+use App\Ability;
+use App\Type;
+use App\EggGroup;
 
 class PokedexSeeder extends Seeder
 {
@@ -107,19 +110,19 @@ class PokedexSeeder extends Seeder
                 //populate pokemon types pivot table
                 $cleaned = $this->clean($data[2]);
                 foreach($cleaned as $oneClean){
-                    $pokemon->types()->attach(\App\Type::where('name', $oneClean)->get());
+                    $pokemon->types()->attach(Type::where('name', $oneClean)->select('id')->get());
                 }
-                $pokemon = Pokemon::find($data[0]);
-                //populate pokemon egg groups pivot table
+
+                //populate pokemon abilities pivot table
                 $cleaned = $this->clean($data[5]);
                 foreach($cleaned as $oneClean){
-                    $pokemon->egg_groups()->attach(\App\EggGroup::where('name', $oneClean)->get());
+                    $pokemon->egg_groups()->attach(Ability::where('name', $oneClean)->select('id')->get());
                 }
-                $pokemon = Pokemon::find($data[0]);
-                //populate pokemon abilities pivot table
+
+                //populate pokemon egg groups pivot table
                 $cleaned = $this->clean($data[6]);
                 foreach($cleaned as $oneClean){
-                    $pokemon->abilities()->attach(\App\Ability::where('name', $oneClean)->get());
+                    $pokemon->abilities()->attach(EggGroup::where('name', $oneClean)->select('id')->get());
                 }
             }
         }

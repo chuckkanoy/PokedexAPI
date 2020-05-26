@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pokemon extends Model
 {
+    protected $hidden = ["pivot"];
     protected $fillable = ['id', 'name', 'types', 'height', 'weight', 'abilities', 'egg_groups', 'stats', 'genus', 'description'];
 
     /**
@@ -25,5 +26,14 @@ class Pokemon extends Model
      */
     public function types() {
         return $this->belongsToMany('App\Type', 'pokemon_types');
+    }
+
+    /**
+     * Get the users associated with the pokemon
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function users() {
+        return $this->belongsToMany('App\User', 'pokemon_users');
     }
 }
