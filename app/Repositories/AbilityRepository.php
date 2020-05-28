@@ -1,20 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Repositories;
 
+use App\Models\Ability;
 use App\Http\Resources\Pokemon as PokemonResource;
-use App\Ability;
 use App\Repositories\Interfaces\AbilityRepositoryInterface;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class AbilityController extends Controller
-{
-    private $abilityRepository;
-
-    public function __construct(AbilityRepositoryInterface $abilityRepository)
-    {
-        $this->abilityRepository=$abilityRepository;
-    }
+class AbilityRepository implements AbilityRepositoryInterface {
 
     /**
      * return pokemon related to the ability
@@ -23,6 +16,8 @@ class AbilityController extends Controller
      * @return AnonymousResourceCollection
      */
     public function show($ability) {
-        return $this->abilityRepository->show($ability);
+        //grabs pokemon even by partial strings
+        $ability = Ability::where('name', 'LIKE', '%'.$ability.'%')->firstOrFail();
+        return PokemonResource::collection($ability->pokemon()->paginate(10));
     }
 }

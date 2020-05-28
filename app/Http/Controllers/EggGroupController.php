@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\EggGroup;
-use App\Http\Resources\Pokemon as PokemonResource;
+use App\Repositories\Interfaces\EggGroupRepositoryInterface;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class EggGroupController extends Controller
 {
+    private $eggGroupRepository;
+
+    public function __construct(EggGroupRepositoryInterface $eggGroupRepository)
+    {
+        $this->eggGroupRepository=$eggGroupRepository;
+    }
+
     /**
      * return a JSON array of the pokemon associated with the group
      *
@@ -15,7 +21,6 @@ class EggGroupController extends Controller
      * @return AnonymousResourceCollection
      */
     public function show($group) {
-        $group = EggGroup::where('name', 'LIKE', '%'.$group.'%')->firstOrFail();
-        return PokemonResource::collection($group->pokemon()->paginate(10));
+        return $this->eggGroupRepository->show($group);
     }
 }

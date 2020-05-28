@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Database\Factories\UserFactory;
+use App\User;
 
 class UserSeeder extends Seeder
 {
@@ -46,7 +47,7 @@ class UserSeeder extends Seeder
             ]);
         }
         //try out factories
-        //UserFactory::populateTable();
+        factory(User::class, 50)->create();
 
     }
 }

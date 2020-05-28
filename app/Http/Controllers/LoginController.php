@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Repositories\Interfaces\LoginRepositoryInterface;
 use Auth;
 use Session;
-use App\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
+    private $loginRepository;
+
+    public function __construct(LoginRepositoryInterface $loginRepository)
+    {
+        $this->loginRepository=$loginRepository;
+    }
+
     /**
      * grant user access if they have provided the appropriate data
      *
@@ -19,18 +24,7 @@ class LoginController extends Controller
      */
     public function authenticate(LoginRequest $request)
     {
-        //check attempt, login if valid
-        if (Auth::attempt($request->only('email', 'password'))) {
-            //logout all other users by clearing api tokens of other records
-            User::where('api_token','<>', null)->update(['api_token'=>null]);
-            //generate a random string for the token
-            $token = Str::random(60);
-            Auth::user()->api_token = $token;
-            Auth::user()->save();
-            return Auth::user();
-        }
-
-        return response()->json('Invalid user data', 400);
+        return $this->loginRepository->authenticate($request);
     }
 
     /**
@@ -40,8 +34,6 @@ class LoginController extends Controller
      */
     public function logout()
     {
-        Auth::user()->api_token = "";
-        Auth::user()->save();
-        return response()->json('Logout successful', 200);
+        return $this->loginRepository->logout();
     }
 }

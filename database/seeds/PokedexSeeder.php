@@ -14,7 +14,7 @@ class PokedexSeeder extends Seeder
      * @param $value
      * @return false|string[]
      */
-    public function clean($value){
+    private function clean($value){
         return explode(',',str_replace(["[","]","\"", " "],'',$value));
     }
 
@@ -24,22 +24,31 @@ class PokedexSeeder extends Seeder
      * @param $column
      * @return array
      */
-    public function getFromColumn($column){
+    private function getFromColumnName($column){
         //initialize local variables for use
         $minimized = [];
         $i = 0;
 
         $file=fopen(public_path() . '/pokedex.csv', 'r');
 
-        //pass over first line
-        fgetcsv($file);
+        //get appropriate column from first line
+        $index = 0;
+        $firstFromFile = fgetcsv($file);
+        $first = $firstFromFile;
+        foreach($first as $one) {
+            if(strcmp($one,$column)===0){
+                $index = $i;
+            }
+            $i++;
+        }
 
+        $i = 0;
         //handle whole file
         while(! feof($file)) {
             while (($data = fgetcsv($file)) !== FALSE) {
 
                 //clean data from column
-                $useArray = $this->clean($data[$column]);
+                $useArray = $this->clean($data[$index]);
                 foreach ($useArray as $use) {
                     if (!in_array($use, $minimized, true)) {
                         $minimized[$i++] = $use;
@@ -47,7 +56,6 @@ class PokedexSeeder extends Seeder
                 }
             }
         }
-
         return $minimized;
     }
 
@@ -57,7 +65,8 @@ class PokedexSeeder extends Seeder
      * @param $minimized
      * @param $table
      */
-    public function insertToTable($minimized, $table){
+    private function insertToTable($table){
+        $minimized = $this->getFromColumnName($table);
         //use minimized array to add table entries
         foreach($minimized as $single) {
             DB::table($table)->insert([
@@ -72,8 +81,12 @@ class PokedexSeeder extends Seeder
      * @param $column
      * @param $table
      */
-    public function getAndInsert($column, $table){
-        $this->insertToTable($this->getFromColumn($column), $table);
+    private function getAndInsert($table){
+        $this->insertToTable($table);
+    }
+
+    private function attachTables($class, $column) {
+
     }
 
     /**
@@ -83,9 +96,9 @@ class PokedexSeeder extends Seeder
     public function run()
     {
         //create and populate tables associated with pokemon
-        $this->getAndInsert(2, 'types');
-        $this->getAndInsert(5, 'abilities');
-        $this->getAndInsert(6, 'egg_groups');
+        $this->getAndInsert('types');
+        $this->getAndInsert('abilities');
+        $this->getAndInsert('egg_groups');
 
         //populate pokemon table from csv and add relationships
         if (($handle = fopen(public_path() . '/pokedex.csv', 'r')) !== FALSE) {
