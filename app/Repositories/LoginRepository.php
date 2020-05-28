@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\LoginRequest;
 use App\Repositories\Interfaces\LoginRepositoryInterface;
-use App\Models\User;
+use App\User;
 use Illuminate\Support\Str;
 use Auth;
 

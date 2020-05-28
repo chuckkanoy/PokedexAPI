@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\EggGroup;
+use App\EggGroup;
 use App\Http\Resources\Pokemon as PokemonResource;
 use App\Repositories\Interfaces\EggGroupRepositoryInterface;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;

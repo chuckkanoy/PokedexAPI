@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Http\Resources\Pokemon as PokemonResource;
-use App\Models\Pokemon;
+use App\Pokemon;
 use App\Repositories\Interfaces\CaptureRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;

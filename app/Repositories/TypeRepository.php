@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Resources\Pokemon as PokemonResource;
 use App\Repositories\Interfaces\TypeRepositoryInterface;
-use App\Models\Type;
+use App\Type;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TypeRepository implements TypeRepositoryInterface {

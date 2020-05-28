@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Ability;
+use App\Ability;
 use App\Http\Resources\Pokemon as PokemonResource;
 use App\Repositories\Interfaces\AbilityRepositoryInterface;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;

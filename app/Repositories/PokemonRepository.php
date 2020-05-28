@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\Pokemon as PokemonResource;
-use App\Models\Pokemon;
+use App\Pokemon;
 use App\Repositories\Interfaces\LoginRepositoryInterface;
 use App\Repositories\Interfaces\PokemonRepositoryInterface;
 use App\User;
