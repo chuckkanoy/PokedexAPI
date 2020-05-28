@@ -17,6 +17,14 @@ use Illuminate\Support\Str;
 |
 */
 
+class UserFactory
+{
+    public static function populateTable()
+    {
+        factory(User::class, 50)->create()->each();
+    }
+}
+
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
@@ -26,3 +34,4 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
+

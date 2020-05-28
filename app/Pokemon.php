@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Pokemon extends Model
 {
@@ -12,36 +13,36 @@ class Pokemon extends Model
     /**
      * Defines many to many relationship between abilities and pokemon
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function abilities() {
-        return $this->belongsToMany('App\Ability','pokemon_abilities');
+        return $this->belongsToMany(Ability::class,'pokemon_abilities');
     }
 
     /**
      * Defines many to many relationship between egg groups and pokemon
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function egg_groups() {
-        return $this->belongsToMany('App\EggGroup', 'pokemon_egg_groups');
+        return $this->belongsToMany(EggGroup::class, 'pokemon_egg_groups');
     }
 
     /**
      * Defines many to many relationship between types and pokemon
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function types() {
-        return $this->belongsToMany('App\Type', 'pokemon_types');
+        return $this->belongsToMany(Type::class, 'pokemon_types');
     }
 
     /**
      * Defines many to many relationship between users and pokemon
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsToMany
      */
     public function users() {
-        return $this->belongsToMany('App\User', 'pokemon_users');
+        return $this->belongsToMany(User::class, 'pokemon_users');
     }
 }

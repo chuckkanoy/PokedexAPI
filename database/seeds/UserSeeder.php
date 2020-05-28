@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
+use Database\Factories\UserFactory;
 
 class UserSeeder extends Seeder
 {
@@ -11,7 +13,9 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        //add a few sample records to user table
+        $faker = Faker::create();
+
+        //populate user table with easy data
         DB::table('users')->insert([
             'name' => 'Professor Oak',
             'email'=>'oakboi@yahoo.com',
@@ -32,5 +36,17 @@ class UserSeeder extends Seeder
             'email'=>'ogash@gmail.com',
             'password'=>Hash::make('l0vepik@chu')
         ]);
+
+        //add more users with random values using faker
+        for($i = 0; $i < 5; $i++) {
+            DB::table('users')->insert([
+                'name' => $faker -> name,
+                'email' => $faker -> unique() -> email,
+                'password' => Hash::make($faker -> password)
+            ]);
+        }
+        //try out factories
+        //UserFactory::populateTable();
+
     }
 }

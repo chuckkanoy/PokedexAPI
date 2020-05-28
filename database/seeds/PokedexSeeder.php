@@ -79,7 +79,6 @@ class PokedexSeeder extends Seeder
     /**
      * Run the database seeds.
      *
-     * @return void
      */
     public function run()
     {
@@ -98,11 +97,8 @@ class PokedexSeeder extends Seeder
                 DB::table('pokemon')->insert([
                     'id' => $data[0],
                     'name' => $data[1],
-                    'types' => $data[2],
                     'height' => $data[3],
                     'weight' => $data[4],
-                    'abilities' => $data[5],
-                    'egg_groups' => $data[6],
                     'stats' => $data[7],
                     'genus' => $data[8],
                     'description' => $data[9],

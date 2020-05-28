@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class EggGroup extends Model
 {
@@ -11,9 +12,9 @@ class EggGroup extends Model
     /**
      * Defines many to many relationship between egg groups and pokemon
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function pokemon() {
-        return $this->belongsToMany('App\Pokemon', 'pokemon_egg_groups');
+        return $this->belongsToMany(Pokemon::class, 'pokemon_egg_groups');
     }
 }

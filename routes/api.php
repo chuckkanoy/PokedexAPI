@@ -1,9 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Resources\Pokemon as PokemonResource;
-use App\Pokemon;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,31 +16,31 @@ use App\Pokemon;
 //secure routes
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', 'LoginController@logout');
-    Route::post('/pokemon/{id}/capture', 'CaptureController@capture');
-    Route::get('/pokemon/captured', 'CaptureController@captured');
+    Route::group(['prefix'=>'pokemon'], function () {
+        Route::post('/{id}/capture', 'CaptureController@capture');
+        Route::get('/captured', 'CaptureController@captured');
+    });
 });
+
+//routes for pokemon
+Route::group(['prefix'=>'pokemon'], function () {
+    Route::get('/', 'PokemonController@index');
+    //route for show using id
+    Route::get('/{id}', 'PokemonController@show');
+    //route for types
+    Route::get('/types/{type}', 'TypeController@show');
+    //route for egg groups
+    Route::get('/egggroups/{group}', 'EggGroupController@show');
+    //route for ability
+    Route::get('/abilities/{ability}', 'AbilityController@show');
+});
+
+//route for show using optional parameter name
+Route::get('/pokemon{name?}', 'PokemonController@index');
 
 //route for login
 Route::post('/login', 'LoginController@authenticate')->name('login');
 
-//routes for registration
+//route for registration
 Route::post('/register', 'UserController@store');
-
-//routes for pokemon
-Route::get('/pokemon', function() {
-    return PokemonResource::collection(Pokemon::paginate(10));
-});
-
-Route::get('/pokemon/{id}', function($id){
-    return new PokemonResource(Pokemon::find($id));
-});
-
-//route for types
-Route::get('pokemon/types/{type}', 'TypeController@show');
-
-//route for egg groups
-Route::get('pokemon/egggroups/{group}', 'EggGroupController@show');
-
-//route for ability
-Route::get('pokemon/abilities/{ability}', 'AbilityController@show');
 

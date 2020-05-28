@@ -2,88 +2,57 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Http\Resources\Pokemon as PokemonResource;
 use App\Pokemon;
 
 class PokemonController extends Controller
 {
     /**
+     * Query pokemon table for partial name match
+     *
+     * @param $name
+     * @return AnonymousResourceCollection
+     */
+    private function getResults($name) {
+        $results = Pokemon::where('name','LIKE', '%'.$name.'%')->paginate(10);
+
+        if(count($results) == 0) {
+            return response()->json('Not Found', 404);
+        }
+
+        return PokemonResource::collection($results);
+    }
+
+    /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
-        $pokemon = DB::table('pokemon')->simplePaginate(10);
-
-        return view('pokemon.index', ['pokemon' => $pokemon]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $name = $request -> input('name');
-        //
+        if(isset($_GET['name'])){
+            $name = $_GET['name'];
+            return $this->getResults($name);
+        }
+        return PokemonResource::collection(Pokemon::paginate(10));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return PokemonResource
      */
-    public function show(Pokemon $id)
+    public function show($id)
     {
-        return view('pokemon.show', ['pokemon'=>$id]);
-    }
+        if (ctype_digit($id)) {
+            return new PokemonResource(Pokemon::find($id));
+        } else {
+            $name = $id;
+            return $this->getResults($name);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

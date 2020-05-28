@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class Pokemon extends JsonResource
 {
+
     /**
      * Transform the resource into an array to return as JSON.
      *
@@ -14,7 +15,8 @@ class Pokemon extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        //fill in return data
+        $data = [
             'id'=>$this->id,
             'name'=>$this->name,
             'types'=>$this->types()->select('name')->get(),
@@ -26,5 +28,18 @@ class Pokemon extends JsonResource
             'genus'=>$this->genus,
             'description'=>$this->description
         ];
+
+        //paginate resource if necessary
+        if(count($data) > $this->perPage){
+            return [
+                'data'=>$data,
+                'pagination'=> [
+                    'size' => $this->perPage,
+                    'total' => $this->total,
+                    'current' => $this->currentPage
+                ]
+            ];
+        }
+        return $data;
     }
 }

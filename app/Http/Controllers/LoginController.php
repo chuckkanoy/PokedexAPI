@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Pokemon;
+use App\Http\Requests\LoginRequest;
 use Auth;
 use Session;
 use App\User;
@@ -11,27 +11,16 @@ use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
-    public function show()
-    {
-        return view('login');
-    }
-
     /**
      * grant user access if they have provided the appropriate data
      *
-     * @param Request $request
+     * @param LoginRequest $request
      * @return mixed
      */
-    public function authenticate(Request $request)
+    public function authenticate(LoginRequest $request)
     {
-        //validate user input and store in array
-        $validator = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
         //check attempt, login if valid
-        if (Auth::attempt($validator)) {
+        if (Auth::attempt($request->only('email', 'password'))) {
             //logout all other users by clearing api tokens of other records
             User::where('api_token','<>', null)->update(['api_token'=>null]);
             //generate a random string for the token
@@ -40,6 +29,8 @@ class LoginController extends Controller
             Auth::user()->save();
             return Auth::user();
         }
+
+        return response()->json('Invalid user data', 400);
     }
 
     /**
@@ -51,6 +42,6 @@ class LoginController extends Controller
     {
         Auth::user()->api_token = "";
         Auth::user()->save();
-        return "Logout successful";
+        return response()->json('Logout successful', 200);
     }
 }

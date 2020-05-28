@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            //PIVOT TABLE POSSIBLE IF ACCESSING ON MULTIPLE DEVICES; NOT NECESSARY FOR THIS PROJECT
             $table->string('api_token', 80)->nullable()->default(null);
             $table->rememberToken();
             $table->timestamps();
