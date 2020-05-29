@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Repositories\Interfaces\UserRepositoryInterface;
-use App\Repositories\UserRepository;
-use Illuminate\Auth\Events\Login;
-use Illuminate\Http\Request;
-use App\User;
+use App\Services\UserService;
 
 
 class UserController extends Controller
 {
 
-    private $userRepository;
-
-    public function __construct(UserRepositoryInterface $userRepository)
+//    private $userRepository;
+//
+    public function __construct(UserService $userService)
     {
-        $this->userRepository = $userRepository;
+        $this->userService = $userService;
     }
 
     /**
@@ -28,6 +23,14 @@ class UserController extends Controller
      */
     public function store(RegisterRequest $request)
     {
-        return $this->userRepository->store($request);
+        //filter data from register request
+        $request = [
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'password'=>$request->password
+        ];
+
+        //send to user service and return result
+        return $this->userService->store($request);
     }
 }

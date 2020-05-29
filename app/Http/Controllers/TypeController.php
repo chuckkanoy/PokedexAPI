@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\Interfaces\TypeRepositoryInterface;
-use App\Type;
 use App\Http\Resources\Pokemon as PokemonResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -23,6 +22,6 @@ class TypeController extends Controller
      * @return AnonymousResourceCollection
      */
     public function show($type) {
-        return $this->typeRepository->show($type);
+        return PokemonResource::collection($this->typeRepository->show($type));
     }
 }

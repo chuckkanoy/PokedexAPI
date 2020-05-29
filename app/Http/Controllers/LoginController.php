@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use App\Repositories\Interfaces\LoginRepositoryInterface;
+use App\Services\LoginService;
 use Auth;
 use Session;
 
 class LoginController extends Controller
 {
-    private $loginRepository;
-
-    public function __construct(LoginRepositoryInterface $loginRepository)
+    /**
+     * LoginController constructor.
+     *
+     * @param LoginService $loginService
+     */
+    public function __construct(LoginService $loginService)
     {
-        $this->loginRepository=$loginRepository;
+        $this->loginService=$loginService;
     }
 
     /**
@@ -24,7 +27,14 @@ class LoginController extends Controller
      */
     public function authenticate(LoginRequest $request)
     {
-        return $this->loginRepository->authenticate($request);
+        //filter data from login request
+        $request = [
+            'email'=>$request->email,
+            'password'=>$request->password
+        ];
+
+        //send to service and return result
+        return $this->loginService->authenticate($request);
     }
 
     /**
@@ -34,6 +44,6 @@ class LoginController extends Controller
      */
     public function logout()
     {
-        return $this->loginRepository->logout();
+        return $this->loginService->logout();
     }
 }

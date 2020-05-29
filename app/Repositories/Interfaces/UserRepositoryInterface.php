@@ -9,7 +9,9 @@ interface UserRepositoryInterface
     /**
      * Add new user to table if possible
      *
-     * @param RegisterRequest $request
+     * @param $request
+     * @param $password
+     * @return mixed
      */
-    public function store(RegisterRequest $request);
+    public function store($request, $password);
 }

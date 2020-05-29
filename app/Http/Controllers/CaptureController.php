@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Interfaces\CaptureRepositoryInterface;
+use App\Services\CaptureService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\Pokemon as PokemonResource;
-use App\Pokemon;
 use Auth;
 
 class CaptureController extends Controller
 {
-    private $captureRepository;
 
-    public function __construct(CaptureRepositoryInterface $captureRepository)
+    public function __construct(CaptureService $captureService)
     {
-        $this->captureRepository = $captureRepository;
+        $this->captureService = $captureService;
     }
 
     /**
@@ -26,7 +24,11 @@ class CaptureController extends Controller
      */
     public function capture($pokemon)
     {
-        return $this->captureRepository->capture($pokemon);
+        if($this->captureService->capture($pokemon)) {
+            return response()->json('Pokemon captured!', 201);
+        } else {
+            return response()->json('Pokemon already captured', 200);
+        }
     }
 
     /**
@@ -36,6 +38,9 @@ class CaptureController extends Controller
      */
     public function captured()
     {
-        return $this->captureRepository->captured();
+        if(!$this->captureService->captured()){
+            return response() -> json('No pokemon captured yet!', 200);
+        }
+        return PokemonResource::collection($this->captureService->captured());
     }
 }

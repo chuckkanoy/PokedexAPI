@@ -2,36 +2,30 @@
 
 namespace App\Repositories;
 
-use App\Http\Controllers\LoginController;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
+
+use App\Mail\PokedexRegistration;
 use App\Repositories\Interfaces\UserRepositoryInterface;
-use App\User;
+use Illuminate\Support\Facades\Mail;
 
 class UserRepository implements UserRepositoryInterface {
 
-    public function store(RegisterRequest $request)
+    public function store($user, $password)
     {
-        //create object of user
-        $user = new User();
-        $user->name=implode($request->only('name'));
-        $email = implode($request->only('email'));
-        $user->email=implode($request->only('email'));
-        $password = implode($request->only('password'));
-
-        //hash user password
-        $user->setPasswordAttribute(implode($request->only('password')));
-
-        $user->save();
         //login with newly made credentials through LoginController
-        $login = new LoginController();
+        $login = new LoginRepository();
         //create new LoginRequest for authentication
-        $new_request = new LoginRequest();
-        $new_request -> replace([
-            'email' => $email,
+        $new_request = [
+            'email' => $user->email,
             'password' => $password
-        ]);
-        //return $new_request;
+        ];
+        //save user to database
+        $user->save();
+
+        //send email about registration
+        $email = $user->email;
+        Mail::to($email)->send(new PokedexRegistration());
+
+        //send login request to login repository
         return $login->authenticate($new_request);
     }
 }

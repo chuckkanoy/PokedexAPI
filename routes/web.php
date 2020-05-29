@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Mail\PokedexRegistration;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,29 +15,29 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    Mail::to('ckanoy@best.com')->send(new PokedexRegistration());
 });
-
-//pokemon related routes
-Route::get('/pokemon', 'PokemonController@index');
-Route::post('/pokemon', 'PokemonController@store');
-Route::get('/pokemon/create', 'PokemonController@create');
-Route::get('/pokemon/{id}', 'PokemonController@show');
-Route::get('/pokemon/{id}/edit', 'PokemonController@edit');
-Route::put('/pokemon/{id}', 'PokemonController@update');
-
-//users related routes
-Route::get('users','UserController@index');
-Route::post('/users', 'UserController@store');
-Route::get('/users/create', 'UserController@create');
-Route::get('/users/{id}', 'UserController@show');
-
-//login routes
-Route::get('/login', 'LoginController@show');
-Route::post('/login', 'LoginController@authenticate');
-Route::get('/logout', 'LoginController@logout');
-//Route::middleware('auth')->group(function(){
-//    Route::post('/logout', 'LoginController@logout');
-//    Route::get('/', 'PokemonController@index');
-//});
+//
+////pokemon related routes
+//Route::get('/pokemon', 'PokemonController@index');
+//Route::post('/pokemon', 'PokemonController@store');
+//Route::get('/pokemon/create', 'PokemonController@create');
+//Route::get('/pokemon/{id}', 'PokemonController@show');
+//Route::get('/pokemon/{id}/edit', 'PokemonController@edit');
+//Route::put('/pokemon/{id}', 'PokemonController@update');
+//
+////users related routes
+//Route::get('users','UserController@index');
+//Route::post('/users', 'UserController@store');
+//Route::get('/users/create', 'UserController@create');
+//Route::get('/users/{id}', 'UserController@show');
+//
+////login routes
+//Route::get('/login', 'LoginController@show');
+//Route::post('/login', 'LoginController@authenticate');
+//Route::get('/logout', 'LoginController@logout');
+////Route::middleware('auth')->group(function(){
+////    Route::post('/logout', 'LoginController@logout');
+////    Route::get('/', 'PokemonController@index');
+////});
 

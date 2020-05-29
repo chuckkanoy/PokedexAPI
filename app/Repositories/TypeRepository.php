@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Http\Resources\Pokemon as PokemonResource;
 use App\Repositories\Interfaces\TypeRepositoryInterface;
 use App\Type;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -18,6 +17,6 @@ class TypeRepository implements TypeRepositoryInterface {
     public function show($type) {
         //grabs pokemon even by partial strings
         $type = Type::where('name', 'LIKE', '%'.$type.'%')->firstOrFail();
-        return PokemonResource::collection($type->pokemon()->paginate(10));
+        return $type->pokemon()->paginate(10);
     }
 }

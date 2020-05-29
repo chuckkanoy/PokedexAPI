@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Pokemon as PokemonResource;
 use App\Repositories\Interfaces\EggGroupRepositoryInterface;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class EggGroupController extends Controller
 {
-    private $eggGroupRepository;
 
+    /**
+     * EggGroupController constructor.
+     *
+     * @param EggGroupRepositoryInterface $eggGroupRepository
+     */
     public function __construct(EggGroupRepositoryInterface $eggGroupRepository)
     {
         $this->eggGroupRepository=$eggGroupRepository;
@@ -21,6 +26,6 @@ class EggGroupController extends Controller
      * @return AnonymousResourceCollection
      */
     public function show($group) {
-        return $this->eggGroupRepository->show($group);
+        return PokemonResource::collection($this->eggGroupRepository->show($group));
     }
 }

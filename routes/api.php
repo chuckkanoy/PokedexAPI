@@ -30,13 +30,10 @@ Route::group(['prefix'=>'pokemon'], function () {
     //route for types
     Route::get('/types/{type}', 'TypeController@show');
     //route for egg groups
-    Route::get('/egggroups/{group}', 'EggGroupController@show');
+    Route::get('/groups/{group}', 'EggGroupController@show');
     //route for ability
     Route::get('/abilities/{ability}', 'AbilityController@show');
 });
-
-//route for show using optional parameter name
-Route::get('/pokemon{name?}', 'PokemonController@index');
 
 //route for login
 Route::post('/login', 'LoginController@authenticate')->name('login');

@@ -15,8 +15,12 @@ interface PokemonRepositoryInterface
     public function index();
 
     /**
+     * show pokemon based on id
+     *
      * @param $id
      * @return PokemonResource
      */
-    public function show($id);
+    public function showID($id);
+
+    public function showName($name);
 }

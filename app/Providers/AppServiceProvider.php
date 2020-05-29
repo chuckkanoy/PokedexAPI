@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
+use League\Flysystem\Config;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+
     }
 
     /**

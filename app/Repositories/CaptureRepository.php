@@ -2,10 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Http\Resources\Pokemon as PokemonResource;
 use App\Pokemon;
 use App\Repositories\Interfaces\CaptureRepositoryInterface;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Auth;
 
@@ -16,7 +14,7 @@ class CaptureRepository implements CaptureRepositoryInterface {
      *
      * @param $property
      * @param $pokemon
-     * @return JsonResponse
+     * @return bool
      */
     private function addToTable($property, $pokemon) {
         //look for pokemon by id and capture if not already captured
@@ -24,16 +22,17 @@ class CaptureRepository implements CaptureRepositoryInterface {
             //add to table or fail
             $pokemon = Pokemon::where($property, $pokemon)->firstOrFail();
             $pokemon->users()->attach(Auth::user());
-            return response()->json('Pokemon captured!', 201);
+            return true;
         } else {
-            return response()->json('Pokemon already captured', 200);
+            return false;
         }
     }
+
     /**
      * Check to see if query is string or not and try to capture
      *
      * @param $pokemon
-     * @return JsonResponse
+     * @return bool
      */
     public function capture($pokemon)
     {
@@ -55,9 +54,9 @@ class CaptureRepository implements CaptureRepositoryInterface {
         $results = Auth::user()->pokemon;
 
         if(count($results) == 0) {
-            return response() -> json('No pokemon captured yet!', 200);
+            return false;
         } else {
-            return PokemonResource::collection(Auth::user()->pokemon()->paginate(10));
+            return Auth::user()->pokemon()->paginate(10);
         }
     }
 }

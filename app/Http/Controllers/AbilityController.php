@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Pokemon as PokemonResource;
-use App\Ability;
-use App\Repositories\Interfaces\AbilityRepositoryInterface;
+use App\Services\AbilityService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AbilityController extends Controller
 {
     private $abilityRepository;
 
-    public function __construct(AbilityRepositoryInterface $abilityRepository)
+    public function __construct(AbilityService $abilityService)
     {
-        $this->abilityRepository=$abilityRepository;
+        $this->abilityService=$abilityService;
     }
 
     /**
@@ -23,6 +22,6 @@ class AbilityController extends Controller
      * @return AnonymousResourceCollection
      */
     public function show($ability) {
-        return $this->abilityRepository->show($ability);
+        return PokemonResource::collection($this->abilityService->show($ability));
     }
 }
