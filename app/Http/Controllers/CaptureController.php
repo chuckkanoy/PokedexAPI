@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\Pokemon as PokemonResource;
 use Auth;
+use Illuminate\Support\Facades\Config;
 
 class CaptureController extends Controller
 {
@@ -25,9 +26,9 @@ class CaptureController extends Controller
     public function capture($pokemon)
     {
         if($this->captureService->capture($pokemon)) {
-            return response()->json('Pokemon captured!', 201);
+            return response()->json('PokemonDetails captured!', 201);
         } else {
-            return response()->json('Pokemon already captured', 200);
+            return response()->json('PokemonDetails already captured', 200);
         }
     }
 
@@ -41,6 +42,6 @@ class CaptureController extends Controller
         if(!$this->captureService->captured()){
             return response() -> json('No pokemon captured yet!', 200);
         }
-        return PokemonResource::collection($this->captureService->captured());
+        return PokemonResource::collection($this->captureService->captured()->paginate(Config::get('constants.perpage')));
     }
 }

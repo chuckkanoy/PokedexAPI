@@ -2,11 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Interfaces\TypeRepositoryInterface;
+use App\EggGroup;
+use App\Repositories\Interfaces\AttributeRepositoryInterface;
 use App\Type;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+//use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class TypeRepository implements TypeRepositoryInterface {
+class TypeRepository implements AttributeRepositoryInterface {
 
     /**
      * return pokemon associated with type
@@ -16,7 +17,12 @@ class TypeRepository implements TypeRepositoryInterface {
      */
     public function show($type) {
         //grabs pokemon even by partial strings
-        $type = Type::where('name', 'LIKE', '%'.$type.'%')->firstOrFail();
-        return $type->pokemon()->paginate(10);
+        $type = Type::where('name', 'LIKE', '%'.$type.'%')->first();
+
+        if($type == null) {
+            return false;
+        }
+
+        return $type;
     }
 }

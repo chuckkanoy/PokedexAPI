@@ -3,10 +3,11 @@
 namespace App\Repositories;
 
 use App\Ability;
-use App\Repositories\Interfaces\AbilityRepositoryInterface;
+use App\Repositories\Interfaces\AttributeRepositoryInterface;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Config;
 
-class AbilityRepository implements AbilityRepositoryInterface {
+class AbilityRepository implements AttributeRepositoryInterface {
 
     /**
      * return pokemon related to the ability
@@ -16,7 +17,12 @@ class AbilityRepository implements AbilityRepositoryInterface {
      */
     public function show($ability) {
         //grabs pokemon even by partial strings
-        $ability = Ability::where('name', 'LIKE', '%'.$ability.'%')->firstOrFail();
-        return $ability->pokemon()->paginate(10);
+        $ability = Ability::where('name', 'LIKE', '%'.$ability.'%')->first();
+
+        if($ability == null) {
+            return false;
+        }
+
+        return $ability;
     }
 }

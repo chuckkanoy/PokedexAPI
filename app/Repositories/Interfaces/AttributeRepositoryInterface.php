@@ -4,13 +4,13 @@ namespace App\Repositories\Interfaces;
 
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-interface TypeRepositoryInterface
+interface AttributeRepositoryInterface
 {
     /**
-     * return pokemon associated with type
+     * return all pokemon associated with attribute
      *
-     * @param $type
+     * @param $attribute
      * @return AnonymousResourceCollection
      */
-    public function show($type);
+    public function show($attribute);
 }

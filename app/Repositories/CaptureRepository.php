@@ -56,7 +56,7 @@ class CaptureRepository implements CaptureRepositoryInterface {
         if(count($results) == 0) {
             return false;
         } else {
-            return Auth::user()->pokemon()->paginate(10);
+            return Auth::user()->pokemon();
         }
     }
 }

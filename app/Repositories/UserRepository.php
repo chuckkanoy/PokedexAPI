@@ -2,10 +2,9 @@
 
 namespace App\Repositories;
 
-
-use App\Mail\PokedexRegistration;
+use App\Notifications\UserRegistered;
 use App\Repositories\Interfaces\UserRepositoryInterface;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class UserRepository implements UserRepositoryInterface {
 
@@ -21,9 +20,11 @@ class UserRepository implements UserRepositoryInterface {
         //save user to database
         $user->save();
 
-        //send email about registration
-        $email = $user->email;
-        Mail::to($email)->send(new PokedexRegistration());
+        //send notification and log info about registration
+        $user->notify(new UserRegistered());
+        Log::info($user->name.' registered an account!');
+        //$email = $user->email;
+        //Mail::to($email)->send(new PokedexRegistration());  //NOT SURE IF THIS IS THE CORRECT LAYER TO PUT THIS
 
         //send login request to login repository
         return $login->authenticate($new_request);

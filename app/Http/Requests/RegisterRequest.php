@@ -16,7 +16,7 @@ class RegisterRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json($validator->errors(), 422));
+        throw new HttpResponseException(response($validator->errors()));
     }
 
     /**
@@ -47,6 +47,9 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
+            'name.required' => 'A name is required',
+            'name.regex' => 'Name must be valid',
+            'name.max' => 'Name must be less than 255 letters',
             'email.required' => 'An email is required.',
             'email.email' => 'A valid email is required.',
             'email.unique' => 'Email already exists.',

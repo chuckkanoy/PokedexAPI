@@ -2,17 +2,11 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\Http\Resources\Pokemon as PokemonResource;
+use App\Http\Resources\PokemonDetails as PokemonResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 interface PokemonRepositoryInterface
 {
-    /**
-     * Display listing of the pokemon resource
-     *
-     * @return AnonymousResourceCollection
-     */
-    public function index();
 
     /**
      * show pokemon based on id
@@ -22,5 +16,11 @@ interface PokemonRepositoryInterface
      */
     public function showID($id);
 
+    /**
+     * show pokemon based on name
+     *
+     * @param $name
+     * @return mixed
+     */
     public function showName($name);
 }

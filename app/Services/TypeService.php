@@ -2,21 +2,22 @@
 
 namespace App\Services;
 
-use App\Repositories\AbilityRepository;
-use App\Repositories\EggGroupRepository;
-use App\Repositories\LoginRepository;
 use App\Repositories\TypeRepository;
-use App\Repositories\UserRepository;
-use App\User;
-use Illuminate\Support\Facades\Hash;
 
-class TypeService {
+class TypeService
+{
     public function __construct(TypeRepository $typeRepository)
     {
-        $this->typeRepository= $typeRepository;
+        $this->typeRepository = $typeRepository;
     }
 
-    public function show($type) {
-        return $this->typeRepository->show($type);
+    public function show($type)
+    {
+        $result = $this->typeRepository->show($type);
+
+        if ($result == false) {
+            return $result;
+        }
+        return $result->pokemon();
     }
 }

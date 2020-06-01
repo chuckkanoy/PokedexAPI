@@ -3,10 +3,6 @@
 namespace App\Services;
 
 use App\Repositories\AbilityRepository;
-use App\Repositories\LoginRepository;
-use App\Repositories\UserRepository;
-use App\User;
-use Illuminate\Support\Facades\Hash;
 
 class AbilityService {
     public function __construct(AbilityRepository $abilityRepository)
@@ -15,6 +11,11 @@ class AbilityService {
     }
 
     public function show($ability) {
-        return $this->abilityRepository->show($ability);
+        $result = $this->abilityRepository->show($ability);
+
+        if($result == false) {
+            return $result;
+        }
+        return $result -> pokemon();
     }
 }

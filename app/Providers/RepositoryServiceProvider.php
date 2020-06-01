@@ -17,7 +17,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $models = [
             'User',
             'Login',
-            'Pokemon',
+            'PokemonDetails',
             'Ability',
             'EggGroup',
             'Type',

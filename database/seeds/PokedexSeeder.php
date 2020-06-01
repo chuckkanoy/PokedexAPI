@@ -5,9 +5,11 @@ use App\Pokemon;
 use App\Ability;
 use App\Type;
 use App\EggGroup;
+use App\Stats;
 
 class PokedexSeeder extends Seeder
 {
+
     /**
      * Turn raw string into usable array
      *
@@ -15,7 +17,7 @@ class PokedexSeeder extends Seeder
      * @return false|string[]
      */
     private function clean($value){
-        return explode(',',str_replace(["[","]","\"", " "],'',$value));
+        return explode(',',str_replace(["{", "}","[","]","\"", " "],'',$value));
     }
 
     /**

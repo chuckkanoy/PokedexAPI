@@ -2,12 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\AbilityRepository;
 use App\Repositories\EggGroupRepository;
-use App\Repositories\LoginRepository;
-use App\Repositories\UserRepository;
-use App\User;
-use Illuminate\Support\Facades\Hash;
 
 class EggGroupService {
     public function __construct(EggGroupRepository $eggGroupRepository)
@@ -16,6 +11,11 @@ class EggGroupService {
     }
 
     public function show($group) {
-        return $this->eggGroupRepository->show($group);
+        $result = $this->eggGroupRepository->show($group);
+
+        if($result == false) {
+            return $result;
+        }
+        return $result -> pokemon();
     }
 }

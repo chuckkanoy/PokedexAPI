@@ -4,10 +4,11 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Pokemon extends JsonResource
+class AttributeResource extends JsonResource
 {
+
     /**
-     * Transform the resource into an array.
+     * Transform the resource into an array to return as JSON.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -15,9 +16,7 @@ class Pokemon extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'types'=>$this->types()->select('name')->get(),
+            'name'=>$this->name
         ];
     }
 }

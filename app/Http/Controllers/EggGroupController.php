@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Pokemon as PokemonResource;
-use App\Repositories\Interfaces\EggGroupRepositoryInterface;
+use App\EggGroup;
+use App\Http\Resources\AttributeResource;
+use App\Http\Resources\Pokemon;
+use App\Services\EggGroupService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Config;
 
 class EggGroupController extends Controller
 {
@@ -12,11 +15,11 @@ class EggGroupController extends Controller
     /**
      * EggGroupController constructor.
      *
-     * @param EggGroupRepositoryInterface $eggGroupRepository
+     * @param EggGroupService $eggGroupService
      */
-    public function __construct(EggGroupRepositoryInterface $eggGroupRepository)
+    public function __construct(EggGroupService $eggGroupService)
     {
-        $this->eggGroupRepository=$eggGroupRepository;
+        $this->eggGroupService=$eggGroupService;
     }
 
     /**
@@ -26,6 +29,32 @@ class EggGroupController extends Controller
      * @return AnonymousResourceCollection
      */
     public function show($group) {
-        return PokemonResource::collection($this->eggGroupRepository->show($group));
+
+        $result = $this->eggGroupService->show($group);
+
+        if(!$result){
+            //generate error if necessary
+            $error = [
+                'error' => [
+                    'code' => '404',
+                    'message' => 'Not Found',
+                    'more' => [
+
+                    ]
+                ]
+            ];
+            return response()->json($error, 404);
+        }
+
+        return Pokemon::collection($result->paginate(Config::get('constants.perpage'))->appends(['group'=>$group]));
+    }
+
+    /**
+     * return all egg groups
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function index() {
+        return AttributeResource::collection(EggGroup::paginate(Config::get('constants.perpage')));
     }
 }

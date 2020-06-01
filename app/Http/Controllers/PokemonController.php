@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Pokemon;
+use App\Pokemon;
 use App\Http\Resources\Pokemon as PokemonResource;
+use App\Http\Resources\PokemonDetails;
 use App\Services\PokemonService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Config;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PokemonController extends Controller
 {
@@ -34,7 +38,7 @@ class PokemonController extends Controller
         }
 
         //send to pokemon service and return as resource
-        return PokemonResource::collection($this->pokemonService->index());
+        return response()->json(PokemonResource::collection(Pokemon::paginate(Config::get('constants.perpage')))->response()->getData(true),200);
     }
 
     /**
@@ -50,10 +54,11 @@ class PokemonController extends Controller
 
         //check if nothing was returned
         if(!$result){
-            return response()->json('Not Found', 404);
+            //generate error if necessary
+            throw new ModelNotFoundException();
         }
 
-        return new PokemonResource($result);
+        return new PokemonDetails($result);
     }
 
     /**
@@ -67,9 +72,10 @@ class PokemonController extends Controller
 
         //check if nothing was returned
         if(!$result){
-            return response()->json('Not Found', 404);
+            //generate error if necessary
+            throw new ModelNotFoundException();
         }
 
-        return PokemonResource::collection($this->pokemonService->showName($name));
+        return PokemonResource::collection($result);
     }
 }
