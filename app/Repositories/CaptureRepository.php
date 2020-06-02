@@ -36,12 +36,7 @@ class CaptureRepository implements CaptureRepositoryInterface {
      */
     public function capture($pokemon)
     {
-        //check if integer
-        if(ctype_digit($pokemon)) {
-            return $this->addToTable('id', $pokemon);
-        } else {
-            return $this->addToTable('name', $pokemon);
-        }
+        return $this->addToTable('id', $pokemon);
     }
 
     /**
