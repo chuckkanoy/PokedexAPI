@@ -2,9 +2,13 @@
 
 namespace App\Services;
 
+use App\Http\Resources\AttributeResource;
+use App\Http\Resources\Pokemon;
 use App\Repositories\EggGroupRepository;
+use Illuminate\Support\Facades\Config;
 
 class EggGroupService {
+    private $eggGroupRepository;
     /**
      * EggGroupService constructor.
      * @param EggGroupRepository $eggGroupRepository
@@ -20,7 +24,8 @@ class EggGroupService {
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function show($group) {
-        return $this->eggGroupRepository->show($group);
+        $result = $this->eggGroupRepository->show($group);
+        return Pokemon::collection($result->paginate(Config::get('constants.perpage'))->appends(['group'=>$group]));
     }
 
     /**
@@ -28,6 +33,6 @@ class EggGroupService {
      * @return mixed
      */
     public function index() {
-        return $this->eggGroupRepository->index();
+        return AttributeResource::collection($this->eggGroupRepository->index());
     }
 }

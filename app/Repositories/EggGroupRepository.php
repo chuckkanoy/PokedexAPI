@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Config;
 
-class EggGroupRepository implements AttributeRepositoryInterface {
+class EggGroupRepository implements AttributeRepositoryInterface
+{
 
     /**
      * return a JSON array of the pokemon associated with the group
@@ -16,14 +17,11 @@ class EggGroupRepository implements AttributeRepositoryInterface {
      * @param $group
      * @return AnonymousResourceCollection
      */
-    public function show($group) {
-        try {
-            //grabs pokemon even by partial strings
-            $group = EggGroup::where('name', 'LIKE', '%' . $group . '%')->firstOrFail()->pokemon();
-            return $group;
-        } catch (ModelNotFoundException $mnfe) {
-            throw $mnfe;
-        }
+    public function show($group)
+    {
+        //grabs pokemon even by partial strings
+        $group = EggGroup::where('name', 'LIKE', '%' . $group . '%')->firstOrFail()->pokemon();
+        return $group;
     }
 
     /**
@@ -31,7 +29,8 @@ class EggGroupRepository implements AttributeRepositoryInterface {
      *
      * @return mixed
      */
-    public function index() {
+    public function index()
+    {
         return EggGroup::paginate(Config::get('constants.perpage'));
     }
 }

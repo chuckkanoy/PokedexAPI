@@ -8,6 +8,8 @@ use App\Services\UserService;
 
 class UserController extends Controller
 {
+    private $userService;
+
     /**
      * UserController constructor.
      * @param UserService $userService

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AttributeRequest;
+use App\Http\Requests\CaptureRequest;
+use App\Repositories\CaptureRepository;
 use App\Repositories\PokemonRepository;
 use App\Services\CaptureService;
 use App\Services\PokemonService;
@@ -13,32 +16,34 @@ use Illuminate\Support\Facades\Config;
 
 class CaptureController extends Controller
 {
+    private $captureService;
+    private $pokemonService;
 
     /**
      * CaptureController constructor.
      * @param CaptureService $captureService
+     * @param PokemonService $pokemonService
      */
-    public function __construct(CaptureService $captureService)
+    public function __construct(CaptureService $captureService, PokemonService $pokemonService)
     {
         $this->captureService = $captureService;
+        $this->pokemonService = $pokemonService;
     }
 
     /**
      * Check to see if query is string or not and try to capture
      *
-     * @param $pokemon
+     * @param $id
      * @return JsonResponse
      */
-    public function capture($pokemon)
+    public function capture(CaptureRequest $request)
     {
+        $id = $request->id;
         //grab pokemon for string use
-        $repo = new PokemonRepository();
-        $service = new PokemonService($repo);
-        $control = new PokemonController($service);
-        $name = $control->show($pokemon)->getData()->name;
+        $name = $this->pokemonService->showID($id)->name;
 
         //return appropriate response
-        if($this->captureService->capture($pokemon)) {
+        if($this->captureService->capture($id)) {
             return response()->json($name.' captured!', 201);
         } else {
             return response()->json($name.' already captured', 200);
@@ -52,9 +57,11 @@ class CaptureController extends Controller
      */
     public function captured()
     {
-        if(!$this->captureService->captured()){
+        $result = $this->captureService->captured();
+
+        if(!$result){
             return response() -> json('No pokemon captured yet!', 200);
         }
-        return PokemonResource::collection($this->captureService->captured()->paginate(Config::get('constants.perpage')));
+        return response()->json($result, 200);
     }
 }

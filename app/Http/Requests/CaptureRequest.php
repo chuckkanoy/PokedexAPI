@@ -3,11 +3,9 @@
 namespace App\Http\Requests;
 
 use Dotenv\Exception\ValidationException;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class LoginRequest extends FormRequest
+class CaptureRequest extends BaseFormRequest
 {
     /**
      * Show JSON response to invalid data entered
@@ -37,19 +35,17 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|max:255',
-            'password' => 'required|max:255'
+            'id' => 'regex:/^\d+$/u'
         ];
     }
 
+    /**
+     * @return array
+     */
     public function messages()
     {
         return [
-            'email.max' => 'Email is too long',
-            'email.required' => 'An email is required.',
-            'email.email' => 'A valid email is required.',
-            'password.required' => 'A password is required',
-            'password.max' => 'Password is too long'
+            'id.regex' => 'Only digits allowed'
         ];
     }
 }

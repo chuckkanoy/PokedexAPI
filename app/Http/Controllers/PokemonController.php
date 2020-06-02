@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PokemonRequest;
 use App\Pokemon;
 use App\Http\Resources\Pokemon as PokemonResource;
 use App\Http\Resources\PokemonDetails;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PokemonController extends Controller
 {
+    private $pokemonService;
     /**
      * PokemonController constructor.
      *
@@ -27,18 +29,20 @@ class PokemonController extends Controller
     /**
      * return formatted pokemon
      *
+     * @param PokemonRequest $request
      * @return JsonResponse|AnonymousResourceCollection
      */
-    public function index()
+    public function index(PokemonRequest $request)
     {
+        $name = $request->input('name');
         //handle optional name parameter if necessary
-        if(isset($_GET['name'])){
-            $name = $_GET['name'];
-            return $this->showName($name);
+        if(isset($name)){
+            $result = $this->pokemonService->showName($name)->response()->getData(true);
+            return response()->json($result, 200);
         }
 
         //send to pokemon service and return as resource
-        $result = PokemonResource::collection($this->pokemonService->index())->response()->getData(true);
+        $result = $this->pokemonService->index()->response()->getData(true);
         return response()->json($result,200);
     }
 
@@ -48,20 +52,10 @@ class PokemonController extends Controller
      * @param $id
      * @return PokemonResource|JsonResponse
      */
-    public function show($id)
+    public function show(PokemonRequest $request)
     {
-        return response()->json(new PokemonDetails($this->pokemonService->showID($id)), 200);
-    }
-
-    /**
-     * find pokemon based on name
-     *
-     * @param $name
-     * @return JsonResponse|AnonymousResourceCollection
-     */
-    public function showName($name) {
-        $result = $this->pokemonService->showName($name);
-
-        return PokemonResource::collection($result);
+        $id = $request->id;
+        $result = $this->pokemonService->showID($id)->response()->getData(true);
+        return response()->json($result, 200);
     }
 }

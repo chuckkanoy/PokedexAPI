@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Config;
 
-class AbilityRepository implements AttributeRepositoryInterface {
+class AbilityRepository implements AttributeRepositoryInterface
+{
 
     /**
      * return pokemon related to the ability
@@ -16,14 +17,11 @@ class AbilityRepository implements AttributeRepositoryInterface {
      * @param $ability
      * @return AnonymousResourceCollection
      */
-    public function show($ability) {
+    public function show($ability)
+    {
         //tries to grab pokemon even by partial strings
-        try{
-            $ability = Ability::where('name', 'LIKE', '%'.$ability.'%')->firstOrFail()->pokemon();
-            return $ability;
-        } catch (ModelNotFoundException $mnfe) {
-            throw $mnfe;
-        }
+        $ability = Ability::where('name', 'LIKE', '%' . $ability . '%')->firstOrFail()->pokemon();
+        return $ability;
     }
 
     /**
@@ -31,7 +29,8 @@ class AbilityRepository implements AttributeRepositoryInterface {
      *
      * @return mixed
      */
-    public function index() {
+    public function index()
+    {
         return Ability::paginate(Config::get('constants.perpage'));
     }
 }

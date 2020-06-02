@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Support\Facades\Hash;
 
 class LoginService {
+    private $loginRepository;
     /**
      * LoginService constructor.
      * @param LoginRepository $loginRepository

@@ -21,7 +21,7 @@ class RepositoryServiceProvider extends ServiceProvider
             'Ability',
             'EggGroup',
             'Type',
-            'Capture'
+            'Capture',
         ];
 
         //bind repository interfaces with repositories
@@ -31,6 +31,11 @@ class RepositoryServiceProvider extends ServiceProvider
                 "App\Repositories\\{$model}Repository"
             );
         }
+
+        $this->app->bind(
+            "App\Repositories\Interfaces\AttributeRepositoryInterface",
+            "App\Repositories\TypeRepository"
+        );
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Error;
+use App\Http\Requests\AttributeRequest;
 use App\Http\Resources\AttributeResource;
 use App\Http\Resources\ErrorResource;
 use App\Http\Resources\Pokemon as PokemonResource;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Config;
 
 class TypeController extends Controller
 {
+
+    private $typeService;
 
     /**
      * TypeController constructor.
@@ -26,13 +29,14 @@ class TypeController extends Controller
     /**
      * return pokemon associated with type
      *
-     * @param $type
+     * @param AttributeResource $request
      * @return AnonymousResourceCollection
      */
-    public function show($type) {
-        $result = $this->typeService->show($type);
+    public function show(AttributeRequest $request) {
+        $type = $request -> type;
+        $result = $this->typeService->show($type)->response()->getData(true);
 
-        return PokemonResource::collection($result->paginate(Config::get('constants.perpage'))->appends(['type'=>$type]));
+        return response()->json($result, 200);
     }
 
     /**
@@ -41,6 +45,8 @@ class TypeController extends Controller
      * @return AnonymousResourceCollection
      */
     public function index() {
-        return AttributeResource::collection($this->typeService->index());
+        $result = $this->typeService->index()->response()->getData(true);
+
+        return response()->json($result, 200);
     }
 }

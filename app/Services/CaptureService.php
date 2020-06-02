@@ -2,14 +2,17 @@
 
 namespace App\Services;
 
+use App\Http\Resources\Pokemon as PokemonResource;
 use App\Repositories\CaptureRepository;
 use App\Repositories\LoginRepository;
 use App\Repositories\PokemonRepository;
 use App\Repositories\UserRepository;
 use App\User;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 
 class CaptureService {
+    private $captureRepository;
     /**
      * CaptureService constructor.
      * @param CaptureRepository $captureRepository
@@ -21,11 +24,11 @@ class CaptureService {
 
     /**
      * add pokemon to captured table
-     * @param $pokemon
+     * @param $id
      * @return bool
      */
-    public function capture($pokemon) {
-        return $this->captureRepository->capture($pokemon);
+    public function capture($id) {
+        return $this->captureRepository->capture($id);
     }
 
     /**
@@ -33,6 +36,8 @@ class CaptureService {
      * @return bool|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function captured() {
-        return $this->captureRepository->captured();
+        $result = $this->captureRepository->captured();
+
+        return PokemonResource::collection($result->paginate(Config::get('constants.perpage')));
     }
 }

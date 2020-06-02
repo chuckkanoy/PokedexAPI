@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\EggGroup;
+use App\Http\Requests\AttributeRequest;
 use App\Http\Resources\AttributeResource;
 use App\Http\Resources\Pokemon;
 use App\Services\EggGroupService;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Config;
 
 class EggGroupController extends Controller
 {
+    private $eggGroupService;
 
     /**
      * EggGroupController constructor.
@@ -26,21 +28,22 @@ class EggGroupController extends Controller
      * return a JSON array of the pokemon associated with the group
      *
      * @param $group
-     * @return AnonymousResourceCollection
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($group) {
+    public function show(AttributeRequest $request) {
+        $group = $request -> group;
+        $result = $this->eggGroupService->show($group)->response()->getData(true);
 
-        $result = $this->eggGroupService->show($group);
-
-        return Pokemon::collection($result->paginate(Config::get('constants.perpage'))->appends(['group'=>$group]));
+        return response()->json($result, 200);
     }
 
     /**
      * return all egg groups
      *
-     * @return AnonymousResourceCollection
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index() {
-        return AttributeResource::collection($this->eggGroupService->index());
+        $result = $this->eggGroupService->index()->response()->getData(true);
+        return response()->json($result, 200);
     }
 }

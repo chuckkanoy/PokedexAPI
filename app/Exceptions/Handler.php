@@ -65,7 +65,7 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'error' => [
                     'code' => 'MODEL_NOT_FOUND',
-                    'message' => $exception->getMessage().'.'
+                    'message' => $exception->getMessage()
                 ]
             ], 404);
         } else if ($exception instanceof ValidationException) {

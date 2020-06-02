@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Config;
 
-class TypeRepository implements AttributeRepositoryInterface {
+class TypeRepository implements AttributeRepositoryInterface
+{
 
     /**
      * return pokemon associated with type
@@ -17,14 +18,11 @@ class TypeRepository implements AttributeRepositoryInterface {
      * @param $type
      * @return AnonymousResourceCollection
      */
-    public function show($type) {
-        try {
-            //grabs pokemon even by partial strings
-            $type = Type::where('name', 'LIKE', '%'.$type.'%')->firstOrFail()->pokemon();
-            return $type;
-        } catch (ModelNotFoundException $mnfe) {
-            throw $mnfe;
-        }
+    public function show($type)
+    {
+        //grabs pokemon even by partial strings
+        $type = Type::where('name', 'LIKE', '%' . $type . '%')->firstOrFail()->pokemon();
+        return $type;
     }
 
     /**
@@ -32,7 +30,8 @@ class TypeRepository implements AttributeRepositoryInterface {
      *
      * @return mixed
      */
-    public function index() {
+    public function index()
+    {
         return Type::paginate(Config::get('constants.perpage'));
     }
 }

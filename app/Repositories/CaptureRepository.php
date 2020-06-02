@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Notifications\Captured;
 use App\Pokemon;
 use App\Repositories\Interfaces\CaptureRepositoryInterface;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -31,12 +32,18 @@ class CaptureRepository implements CaptureRepositoryInterface {
     /**
      * Check to see if query is string or not and try to capture
      *
-     * @param $pokemon
+     * @param $id
      * @return bool
      */
-    public function capture($pokemon)
+    public function capture($id)
     {
-        return $this->addToTable('id', $pokemon);
+        $result = $this->addToTable('id', $id);
+
+        if($result) {
+            Auth::user()->notify(new Captured(Pokemon::where('id', $id)->firstOrFail()));
+        }
+
+        return $result;
     }
 
     /**

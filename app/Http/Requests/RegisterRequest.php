@@ -41,8 +41,8 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'required|regex:/^[a-zA-Z]+$/u|max:255',
             //assure that user does not already have an account
-            'email' => 'required|email|unique:users,email,{$this->user->id}',
-            'password' => 'required'
+            'email' => 'required|email|unique:users,email,{$this->user->id}|max:255',
+            'password' => 'required|max:255'
         ];
     }
 
@@ -55,7 +55,9 @@ class RegisterRequest extends FormRequest
             'email.required' => 'An email is required.',
             'email.email' => 'A valid email is required.',
             'email.unique' => 'Email already exists.',
-            'password.required' => 'A password is required'
+            'email.max'=> 'Email is too long',
+            'password.required' => 'A password is required',
+            'password.max' => 'Password is too long'
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Repositories\UserRepository;
 use App\User;
 
 class UserService {
+    private $user;
     /**
      * UserService constructor.
      * @param UserRepository $user

@@ -9,6 +9,7 @@ use Session;
 
 class LoginController extends Controller
 {
+    private $loginService;
     /**
      * LoginController constructor.
      *

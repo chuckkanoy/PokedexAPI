@@ -20,12 +20,8 @@ class PokemonRepository implements PokemonRepositoryInterface
     public function showID($id)
     {
         //attempt to find pokemon by id
-        try {
-            $result = Pokemon::findOrFail($id);
-            return $result;
-        } catch (ModelNotFoundException $mnfe) {
-            throw $mnfe;
-        }
+        $result = Pokemon::findOrFail($id);
+        return $result;
 
     }
 
@@ -48,7 +44,8 @@ class PokemonRepository implements PokemonRepositoryInterface
      *
      * @return mixed
      */
-    public function index() {
+    public function index()
+    {
         return Pokemon::paginate(Config::get('constants.perpage'));
     }
 }

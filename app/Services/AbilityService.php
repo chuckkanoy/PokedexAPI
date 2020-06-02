@@ -2,9 +2,13 @@
 
 namespace App\Services;
 
+use App\Http\Resources\AttributeResource;
+use App\Http\Resources\Pokemon as PokemonResource;
 use App\Repositories\AbilityRepository;
+use Illuminate\Support\Facades\Config;
 
 class AbilityService {
+    private $abilityRepository;
     /**
      * AbilityService constructor.
      * @param AbilityRepository $abilityRepository
@@ -20,7 +24,9 @@ class AbilityService {
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function show($ability) {
-        return $this->abilityRepository->show($ability);
+        $result = $this->abilityRepository->show($ability);
+
+        return PokemonResource::collection($result->paginate(Config::get('constants.perpage'))->appends(['ability'=>$ability]));
     }
 
     /**
@@ -28,6 +34,6 @@ class AbilityService {
      * @return mixed
      */
     public function index() {
-        return $this->abilityRepository->index();
+        return AttributeResource::collection($this->abilityRepository->index());
     }
 }

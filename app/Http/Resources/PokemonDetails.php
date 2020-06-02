@@ -19,6 +19,7 @@ class PokemonDetails extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->name,
+            'image'=>'https://intern-pokedex.myriadapps.com/images/pokemon/'.$this->id.'.png',
             'types'=>$this->types()->select('name')->get(),
             'height'=>$this->height,
             'weight'=>$this->weight,

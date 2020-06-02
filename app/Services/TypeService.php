@@ -2,10 +2,14 @@
 
 namespace App\Services;
 
+use App\Http\Resources\AttributeResource;
+use App\Http\Resources\Pokemon as PokemonResource;
 use App\Repositories\TypeRepository;
+use Illuminate\Support\Facades\Config;
 
 class TypeService
 {
+    private $typeRepository;
     /**
      * TypeService constructor.
      * @param TypeRepository $typeRepository
@@ -22,7 +26,8 @@ class TypeService
      */
     public function show($type)
     {
-        return $this->typeRepository->show($type);
+        $result = $this->typeRepository->show($type);
+        return PokemonResource::collection($result->paginate(Config::get('constants.perpage'))->appends(['type'=>$type]));
     }
 
     /**
@@ -30,6 +35,7 @@ class TypeService
      * @return mixed
      */
     public function index() {
-        return $this->typeRepository->index();
+        $result = $this->typeRepository->index();
+        return AttributeResource::collection($result);
     }
 }

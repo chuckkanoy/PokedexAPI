@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Ability;
+use App\Http\Requests\AttributeRequest;
 use App\Http\Resources\AttributeResource;
 use App\Http\Resources\Pokemon as PokemonResource;
 use App\Services\AbilityService;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Config;
 
 class AbilityController extends Controller
 {
+    private $abilityService;
 
     /**
      * AbilityController constructor.
@@ -27,10 +29,10 @@ class AbilityController extends Controller
      * @param $ability
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($ability) {
+    public function show(AttributeRequest $request) {
+        $ability = $request->ability;
         //store the results of the method call as a resource collection
-        $result = $this->abilityService->show($ability);
-        $result = PokemonResource::collection($result->paginate(Config::get('constants.perpage'))->appends(['ability'=>$ability]));
+        $result = $this->abilityService->show($ability)->response()->getData(true);
 
         //return collection with status code
         return response()->json($result, 200);
@@ -42,6 +44,7 @@ class AbilityController extends Controller
      * @return AnonymousResourceCollection
      */
     public function index() {
-        return AttributeResource::collection($this->abilityService->index());
+        $result = $this->abilityService->index()->response()->getData(true);
+        return response()->json($result, 200);
     }
 }
