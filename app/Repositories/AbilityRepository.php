@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Ability;
 use App\Repositories\Interfaces\AttributeRepositoryInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Config;
 
@@ -16,13 +17,21 @@ class AbilityRepository implements AttributeRepositoryInterface {
      * @return AnonymousResourceCollection
      */
     public function show($ability) {
-        //grabs pokemon even by partial strings
-        $ability = Ability::where('name', 'LIKE', '%'.$ability.'%')->first();
-
-        if($ability == null) {
-            return false;
+        //tries to grab pokemon even by partial strings
+        try{
+            $ability = Ability::where('name', 'LIKE', '%'.$ability.'%')->firstOrFail()->pokemon();
+            return $ability;
+        } catch (ModelNotFoundException $mnfe) {
+            throw $mnfe;
         }
+    }
 
-        return $ability;
+    /**
+     * return list of all abilities
+     *
+     * @return mixed
+     */
+    public function index() {
+        return Ability::paginate(Config::get('constants.perpage'));
     }
 }

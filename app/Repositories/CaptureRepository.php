@@ -45,9 +45,9 @@ class CaptureRepository implements CaptureRepositoryInterface {
     }
 
     /**
-     * return JSON array of pokemon captured by the user
+     * return all pokemon captured by user
      *
-     * @return AnonymousResourceCollection
+     * @return bool|AnonymousResourceCollection
      */
     public function captured()
     {

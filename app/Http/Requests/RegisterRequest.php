@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Dotenv\Exception\ValidationException;
+use Egulias\EmailValidator\Exception\DomainHyphened;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -16,7 +18,7 @@ class RegisterRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response($validator->errors()));
+        throw new ValidationException($validator->errors());
     }
 
     /**

@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Log;
 
 class UserRepository implements UserRepositoryInterface {
 
+    /**
+     * register a user in the system
+     *
+     * @param $user
+     * @param $password
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
     public function store($user, $password)
     {
         //login with newly made credentials through LoginController

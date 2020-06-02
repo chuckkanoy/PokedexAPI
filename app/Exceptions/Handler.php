@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Dotenv\Exception\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -64,15 +65,15 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'error' => [
                     'code' => 'MODEL_NOT_FOUND',
-                    'message' => 'No query results for model ' . $exception->getModel(). '.'
+                    'message' => $exception->getMessage().'.'
                 ]
             ], 404);
-        } else if ($exception instanceof HttpResponseException) {
+        } else if ($exception instanceof ValidationException) {
             return response()->json([
                 'error' => [
                     'code' => 'VALIDATION_ERROR',
                     'message' => 'You have validation errors in your submission',
-                    'validation_messages' => $exception->getMessage()
+                    'validation_messages' => json_decode($exception->getMessage())
                 ]
             ], 422);
         }

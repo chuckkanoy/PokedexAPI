@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Dotenv\Exception\ValidationException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -15,14 +16,7 @@ class LoginRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        $error = [
-            'error' => [
-                'code' => 'VALIDATION_ERROR',
-                'message' => 'You have validation errors in your submission',
-                'validation_messages' => $validator->errors()
-            ]
-        ];
-        throw new HttpResponseException(response()->json($error, 422));
+        throw new ValidationException($validator->errors());
     }
 
     /**

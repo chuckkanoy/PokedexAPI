@@ -32,20 +32,6 @@ class EggGroupController extends Controller
 
         $result = $this->eggGroupService->show($group);
 
-        if(!$result){
-            //generate error if necessary
-            $error = [
-                'error' => [
-                    'code' => '404',
-                    'message' => 'Not Found',
-                    'more' => [
-
-                    ]
-                ]
-            ];
-            return response()->json($error, 404);
-        }
-
         return Pokemon::collection($result->paginate(Config::get('constants.perpage'))->appends(['group'=>$group]));
     }
 
@@ -55,6 +41,6 @@ class EggGroupController extends Controller
      * @return AnonymousResourceCollection
      */
     public function index() {
-        return AttributeResource::collection(EggGroup::paginate(Config::get('constants.perpage')));
+        return AttributeResource::collection($this->eggGroupService->index());
     }
 }

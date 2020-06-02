@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Config;
 class CaptureController extends Controller
 {
 
+    /**
+     * CaptureController constructor.
+     * @param CaptureService $captureService
+     */
     public function __construct(CaptureService $captureService)
     {
         $this->captureService = $captureService;
@@ -25,17 +29,18 @@ class CaptureController extends Controller
      */
     public function capture($pokemon)
     {
+        //make pokemon into an object
         if($this->captureService->capture($pokemon)) {
-            return response()->json('PokemonDetails captured!', 201);
+            return response()->json('Pokemon captured!', 201);
         } else {
-            return response()->json('PokemonDetails already captured', 200);
+            return response()->json('Pokemon already captured', 200);
         }
     }
 
     /**
-     * return JSON array of pokemon captured by the user
+     * Return all pokemon captured by a given user
      *
-     * @return AnonymousResourceCollection
+     * @return JsonResponse|AnonymousResourceCollection
      */
     public function captured()
     {

@@ -54,7 +54,7 @@ Route::post('/login', 'LoginController@authenticate')->name('login');
 //route for registration
 Route::post('/register', 'UserController@store');
 
-//route for unknown input
+//route for unknown input or no user logged in
 Route::fallback(function() {
     throw new NotFoundHttpException();
 });

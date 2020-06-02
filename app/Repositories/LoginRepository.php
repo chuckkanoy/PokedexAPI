@@ -9,6 +9,12 @@ use Auth;
 
 class LoginRepository implements LoginRepositoryInterface{
 
+    /**
+     * attempt to log user in
+     *
+     * @param \App\Http\Requests\LoginRequest $request
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
     public function authenticate($request)
     {
         //return $request;
@@ -26,6 +32,11 @@ class LoginRepository implements LoginRepositoryInterface{
         return response()->json('Invalid user data', 400);
     }
 
+    /**
+     * log current user out of the system
+     *
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
     public function logout()
     {
         Auth::user()->api_token = "";

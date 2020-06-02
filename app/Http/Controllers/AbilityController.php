@@ -12,35 +12,28 @@ use Illuminate\Support\Facades\Config;
 class AbilityController extends Controller
 {
 
+    /**
+     * AbilityController constructor.
+     * @param AbilityService $abilityService
+     */
     public function __construct(AbilityService $abilityService)
     {
         $this->abilityService=$abilityService;
     }
 
     /**
-     * return pokemon related to the ability
+     * Return the pokemon associated with a given ability
      *
      * @param $ability
-     * @return AnonymousResourceCollection
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($ability) {
+        //store the results of the method call as a resource collection
         $result = $this->abilityService->show($ability);
+        $result = PokemonResource::collection($result->paginate(Config::get('constants.perpage'))->appends(['ability'=>$ability]));
 
-        if(!$result){
-            //generate error if necessary
-            $error = [
-                'error' => [
-                    'code' => 'NOT FOUND',
-                    'message' => 'Not Found',
-                    'more' => [
-
-                    ]
-                ]
-            ];
-            return response()->json($error, 404);
-        }
-
-        return PokemonResource::collection($result->paginate(Config::get('constants.perpage'))->appends(['ability'=>$ability]));
+        //return collection with status code
+        return response()->json($result, 200);
     }
 
     /**
@@ -49,6 +42,6 @@ class AbilityController extends Controller
      * @return AnonymousResourceCollection
      */
     public function index() {
-        return AttributeResource::collection(Ability::paginate(Config::get('constants.perpage')));
+        return AttributeResource::collection($this->abilityService->index());
     }
 }

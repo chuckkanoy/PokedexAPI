@@ -5,7 +5,9 @@ namespace App\Repositories;
 use App\EggGroup;
 use App\Repositories\Interfaces\AttributeRepositoryInterface;
 use App\Type;
-//use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Config;
 
 class TypeRepository implements AttributeRepositoryInterface {
 
@@ -16,13 +18,21 @@ class TypeRepository implements AttributeRepositoryInterface {
      * @return AnonymousResourceCollection
      */
     public function show($type) {
-        //grabs pokemon even by partial strings
-        $type = Type::where('name', 'LIKE', '%'.$type.'%')->first();
-
-        if($type == null) {
-            return false;
+        try {
+            //grabs pokemon even by partial strings
+            $type = Type::where('name', 'LIKE', '%'.$type.'%')->firstOrFail()->pokemon();
+            return $type;
+        } catch (ModelNotFoundException $mnfe) {
+            throw $mnfe;
         }
+    }
 
-        return $type;
+    /**
+     * return list of all types
+     *
+     * @return mixed
+     */
+    public function index() {
+        return Type::paginate(Config::get('constants.perpage'));
     }
 }

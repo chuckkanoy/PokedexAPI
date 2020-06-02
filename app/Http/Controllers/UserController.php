@@ -8,15 +8,20 @@ use App\Services\UserService;
 
 class UserController extends Controller
 {
+    /**
+     * UserController constructor.
+     * @param UserService $userService
+     */
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
     }
 
     /**
-     * Add new user to table if possible
+     * add user to database
      *
      * @param RegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse|mixed
      */
     public function store(RegisterRequest $request)
     {

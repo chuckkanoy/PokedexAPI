@@ -25,9 +25,9 @@ class PokemonController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * return formatted pokemon
      *
-     * @return AnonymousResourceCollection
+     * @return JsonResponse|AnonymousResourceCollection
      */
     public function index()
     {
@@ -38,7 +38,8 @@ class PokemonController extends Controller
         }
 
         //send to pokemon service and return as resource
-        return response()->json(PokemonResource::collection(Pokemon::paginate(Config::get('constants.perpage')))->response()->getData(true),200);
+        $result = PokemonResource::collection($this->pokemonService->index())->response()->getData(true);
+        return response()->json($result,200);
     }
 
     /**
@@ -49,16 +50,7 @@ class PokemonController extends Controller
      */
     public function show($id)
     {
-        //send id to service
-        $result = $this->pokemonService->showID($id);
-
-        //check if nothing was returned
-        if(!$result){
-            //generate error if necessary
-            throw new ModelNotFoundException();
-        }
-
-        return new PokemonDetails($result);
+        return response()->json(new PokemonDetails($this->pokemonService->showID($id)), 200);
     }
 
     /**
@@ -69,12 +61,6 @@ class PokemonController extends Controller
      */
     public function showName($name) {
         $result = $this->pokemonService->showName($name);
-
-        //check if nothing was returned
-        if(!$result){
-            //generate error if necessary
-            throw new ModelNotFoundException();
-        }
 
         return PokemonResource::collection($result);
     }
