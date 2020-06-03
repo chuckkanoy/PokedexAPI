@@ -18,7 +18,7 @@ class Pokemon extends JsonResource
             'id'=>$this->id,
             'name'=>$this->name,
             'image'=>'https://intern-pokedex.myriadapps.com/images/pokemon/'.$this->id.'.png',
-            'types'=>$this->types()->select('name')->get(),
+            'types'=>$this->types()->get()->pluck('name'),
         ];
     }
 }
