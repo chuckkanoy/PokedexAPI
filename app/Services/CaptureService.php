@@ -38,6 +38,6 @@ class CaptureService {
     public function captured() {
         $result = $this->captureRepository->captured();
 
-        return PokemonResource::collection($result->paginate(Config::get('constants.perpage')));
+        return PokemonResource::collection($result);
     }
 }

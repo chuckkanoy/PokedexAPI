@@ -57,7 +57,7 @@ class CaptureController extends Controller
      */
     public function captured()
     {
-        $result = $this->captureService->captured();
+        $result = $this->captureService->captured()->response()->getData(true);
 
         if(!$result){
             return response() -> json('No pokemon captured yet!', 200);

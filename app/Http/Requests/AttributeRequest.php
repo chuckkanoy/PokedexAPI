@@ -35,9 +35,9 @@ class AttributeRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'ability' => 'regex:/^[a-zA-Z]+$/u|max:255',
-            'type' => 'regex:/^[a-zA-Z]+$/u',
-            'group' => 'regex:/^[0-9a-zA-Z]+$/u'
+            'ability' => 'regex:/^[-a-zA-Z]+$/u|max:255',
+            'type' => 'regex:/^[-a-zA-Z]+$/u',
+            'group' => 'regex:/^[-0-9a-zA-Z]+$/u'
         ];
     }
 

@@ -7,6 +7,7 @@ use App\Pokemon;
 use App\Repositories\Interfaces\CaptureRepositoryInterface;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Auth;
+use Illuminate\Support\Facades\Config;
 
 class CaptureRepository implements CaptureRepositoryInterface {
 
@@ -58,7 +59,7 @@ class CaptureRepository implements CaptureRepositoryInterface {
         if(count($results) == 0) {
             return false;
         } else {
-            return Auth::user()->pokemon();
+            return Auth::user()->pokemon()->paginate(Config::get('constants.perpage'));
         }
     }
 }

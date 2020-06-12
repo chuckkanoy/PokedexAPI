@@ -29,7 +29,7 @@ class LoginRepository implements LoginRepositoryInterface{
             return Auth::user();
         }
 
-        return response()->json('Invalid user data', 400);
+        return response()->json('Invalid user data', 401);
     }
 
     /**
