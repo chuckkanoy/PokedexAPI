@@ -19,6 +19,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::middleware('auth:api')->group(function () {
         Route::post('/logout', 'LoginController@logout');
         Route::group(['prefix' => 'pokemon'], function () {
+            Route::post('/release/{id}', 'CaptureController@release');
             Route::post('/capture/{id}', 'CaptureController@capture');
             Route::get('/captured', 'CaptureController@captured');
         });

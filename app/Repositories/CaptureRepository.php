@@ -31,6 +31,25 @@ class CaptureRepository implements CaptureRepositoryInterface {
     }
 
     /**
+     * remove desired pokemon from table
+     *
+     * @param $property
+     * @param $pokemon
+     * @return bool
+     */
+    private function removeFromTable($property, $pokemon) {
+        //look for pokemon by id and release if not already captured
+        if (Auth::user()->pokemon->contains(Pokemon::where($property, $pokemon)->firstOrFail())) {
+            //add to table or fail
+            $pokemon = Pokemon::where($property, $pokemon)->firstOrFail();
+            $pokemon->users()->detach(Auth::user());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Check to see if query is string or not and try to capture
      *
      * @param $id
@@ -45,6 +64,10 @@ class CaptureRepository implements CaptureRepositoryInterface {
         }
 
         return $result;
+    }
+
+    public function release($id) {
+        return $this->removeFromTable('id', $id);
     }
 
     /**

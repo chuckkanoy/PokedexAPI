@@ -32,6 +32,16 @@ class CaptureService {
     }
 
     /**
+     * remove pokemon from captured table
+     *
+     * @param $id
+     * @return bool
+     */
+    public function release($id) {
+        return $this->captureRepository->release($id);
+    }
+
+    /**
      * return list of all pokemon captured
      * @return bool|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */

@@ -51,6 +51,25 @@ class CaptureController extends Controller
     }
 
     /**
+     * Check appropriate validation and try to release
+     *
+     * @param CaptureRequest $request
+     * @return JsonResponse
+     */
+    public function release(CaptureRequest $request) {
+        $id = $request->id;
+        //grab pokemon for string use
+        $name = $this->pokemonService->showID($id)->name;
+
+        //return appropriate response
+        if($this->captureService->release($id)) {
+            return response()->json($name.' released!', 201);
+        } else {
+            return response()->json($name.' is not yet captured.', 200);
+        }
+    }
+
+    /**
      * Return all pokemon captured by a given user
      *
      * @return JsonResponse|AnonymousResourceCollection
@@ -59,8 +78,8 @@ class CaptureController extends Controller
     {
         $result = $this->captureService->captured()->response()->getData(true);
 
-        if(!$result){
-            return response() -> json('No pokemon captured yet!', 200);
+        if (!$result) {
+            return response()->json('No pokemon captured yet!', 200);
         }
         return response()->json($result, 200);
     }
