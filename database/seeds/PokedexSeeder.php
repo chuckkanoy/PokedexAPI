@@ -130,12 +130,13 @@ class PokedexSeeder extends Seeder
 
                 $cleaned = $this->clean($data[5]);
                 foreach($cleaned as $oneClean){
-                    $pokemon->egg_groups()->attach(Ability::where('name', $oneClean)->select('id')->get());
+                    $pokemon->abilities()->attach(Ability::where('name', $oneClean)->select('id')->get());
                 }
 
                 $cleaned = $this->clean($data[6]);
                 foreach($cleaned as $oneClean){
-                    $pokemon->abilities()->attach(EggGroup::where('name', $oneClean)->select('id')->get());
+                    print($oneClean);
+                    $pokemon->egg_groups()->attach(EggGroup::where('name', $oneClean)->select('id')->get());
                 }
             }
         }
