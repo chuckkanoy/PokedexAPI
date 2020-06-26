@@ -45,10 +45,11 @@ class Captured extends Notification
     {
         $pokemon = new PokemonResource($this->pokemon);
         return (new MailMessage)
-                    ->subject($this->pokemon.' Captured!')
+                    ->subject($this->pokemon->name.' Captured!')
                     ->greeting('Congratulations!')
                     ->line('You captured '.$pokemon->name.'!')
-                    ->action('Check in', url('/api/pokemon/'.$pokemon->id));
+                    ->action('Check in', url('http://localhost:3000/pokemon/'.$pokemon->id))
+                    ->salutation('Have fun on your future adventures!');
     }
 
     /**

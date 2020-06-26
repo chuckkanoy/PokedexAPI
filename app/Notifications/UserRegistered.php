@@ -44,7 +44,7 @@ class UserRegistered extends Notification
                     ->subject('Thank you for using the Pokedex!')
                     ->greeting('Hello, dear user!')
                     ->line('You are now an official member of this Pokedex application. ')
-                    ->action('Let\'s go!', url('/')) //NOT SURE IF THIS WILL SEND TO FRONT END PROPERLY
+                    ->action('Let\'s go!', url('http://localhost:3000')) //NOT SURE IF THIS WILL SEND TO FRONT END PROPERLY
                     ->line('Best of luck in your pokemon journey!')
                     ->salutation('Professor Oak');
     }
